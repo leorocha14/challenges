@@ -9,6 +9,9 @@ import java.util.concurrent.*;
 import java.util.function.*;
 import java.util.regex.*;
 import java.util.stream.*;
+
+import javax.management.RuntimeErrorException;
+
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 
@@ -33,18 +36,20 @@ class Result {
         if (areEquals) {
             return 0;
         }
+        
+        Map<Integer, Integer> repeatedNumbers = new HashMap<>();
 
-        // for (int i = 0; i < s.size(); i++) {
-        //     for (int j = 0; j < s.get(i).size(); j++) {
-        //         Integer element = s.get(i).get(j);
-        //         if (i == 0) {
-                    
-        //         }
-        //     }
-        // }
+        int sameNum = s.get(0).get(0);
 
+        for (int j = 0; j < s.size(); j++) {
+            for (int j2 = 0; j2 < s.get(j).size(); j2++) {
+                if ((s.get(j).get(j2) == s.get(j).get(j2 - 1)) || s.get(j).get(j2) == sameNum) {
+                    repeatedNumbers.put(j, s.get(j).get(j2));
+                }
+            }
+        }
 
-        return 7;
+        throw new RuntimeErrorException(new Error(), "It was not possible to determine the minor conversion cost");
     }
 
     private static boolean checkSum(List<List<Integer>> square) {
@@ -62,7 +67,7 @@ class Result {
         
         List<Integer> sumList = Arrays.asList(rowOneSum, rowTwoSum, rowThreeSum, colOneSum, colTwoSum, colThreeSum, digOneSum, digTwoSum);
 
-        return sumList.stream().distinct().findAny().isEmpty();
+        return sumList.stream().allMatch(s -> s.equals(rowOneSum));
     }
 
 }
