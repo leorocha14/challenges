@@ -2,57 +2,60 @@ package com.add.two.numbers;
 
 import com.add.two.numbers.models.ListNode;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Solution {
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
 
+        List<BigInteger> firstNodeIntegerList = getNodeListAsIntegerList(l1);
+        BigInteger firstNumber = getAllPositionAsSingleNumber(firstNodeIntegerList);
 
-        List<Integer> nodes = new ArrayList<>();
-        nodes.add(l1.val);
-        ListNode currentNode = l1.next;
-        while (currentNode != null) {
-            nodes.add(currentNode.val);
-            currentNode = currentNode.next;
-        }
+        List<BigInteger> secondNodeIntegerList = getNodeListAsIntegerList(l2);
+        BigInteger secondNumber = getAllPositionAsSingleNumber(secondNodeIntegerList);
 
-        List<Integer> reversedNodes = nodes.reversed();
+        BigInteger sumOfTheNumbers = firstNumber.add(secondNumber);
 
-        StringBuffer sb = new StringBuffer();
-        reversedNodes.forEach(sb::append);
+        return getSumAsListNode(sumOfTheNumbers);
+    }
 
-        Integer firstNumber = Integer.valueOf(sb.toString());
+    private ListNode getSumAsListNode(BigInteger sumOfTheNumbers) {
+        char[] sumAsCharArray = sumOfTheNumbers.toString().toCharArray();
 
-        nodes.clear();
+        ListNode sumAsListNode = new ListNode(getIntParsedChar(sumAsCharArray[sumAsCharArray.length - 1]));
 
-        nodes.add(l2.val);
-        currentNode = l2.next;
-        while (currentNode != null) {
-            nodes.add(currentNode.val);
-            currentNode = currentNode.next;
-        }
-
-        reversedNodes = nodes.reversed();
-
-        sb = new StringBuffer();
-        reversedNodes.forEach(sb::append);
-
-        Integer secondNumber = Integer.valueOf(sb.toString());
-
-        int sumOfTheNumbers = firstNumber + secondNumber;
-
-        char[] sumAsCharArray = String.valueOf(sumOfTheNumbers).toCharArray();
-
-        ListNode sumAsListNode = new ListNode(Integer.parseInt(String.valueOf(sumAsCharArray[sumAsCharArray.length - 1])));
-
-        currentNode = sumAsListNode;
+        ListNode currentNode = sumAsListNode;
         for (int i = sumAsCharArray.length - 2; i >= 0; i--) {
             currentNode.next = new ListNode();
             currentNode = currentNode.next;
-            currentNode.val = Integer.parseInt(String.valueOf(sumAsCharArray[i]));
+            currentNode.val = getIntParsedChar(sumAsCharArray[i]);
         }
-
         return sumAsListNode;
+    }
+
+    private int getIntParsedChar(char character) {
+        return Integer.parseInt(String.valueOf(character));
+    }
+
+    private BigInteger getAllPositionAsSingleNumber(List<BigInteger> integerNodeList) {
+
+        StringBuilder stringBuilder = new StringBuilder();
+        integerNodeList.forEach(stringBuilder::append);
+
+        StringBuilder reversedNumberAsString = stringBuilder.reverse();
+
+        return new BigInteger(reversedNumberAsString.toString());
+    }
+
+    private List<BigInteger> getNodeListAsIntegerList(ListNode listNode) {
+        List<BigInteger> nodes = new ArrayList<>();
+        nodes.add(BigInteger.valueOf(listNode.val));
+        ListNode currentNode = listNode.next;
+        while (currentNode != null) {
+            nodes.add(BigInteger.valueOf(currentNode.val));
+            currentNode = currentNode.next;
+        }
+        return nodes;
     }
 }

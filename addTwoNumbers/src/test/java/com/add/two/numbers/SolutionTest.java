@@ -45,4 +45,16 @@ public class SolutionTest {
 
         assertEquals(expected, result);
     }
+
+    @Test
+    public void shouldReturnOneZeroZeroZeroZeroZeroZeroZeroZeroZero() {
+        ListNode listOne = new ListNode(1, new ListNode(9, new ListNode(9, new ListNode(9, new ListNode(9, new ListNode(9, new ListNode(9, new ListNode(9, new ListNode(9, new ListNode(9))))))))));
+        ListNode listTwo = new ListNode(9);
+
+        ListNode expected = new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(0, new ListNode(1)))))))))));
+
+        ListNode result = solution.addTwoNumbers(listOne, listTwo);
+
+        assertEquals(expected, result);
+    }
 }
